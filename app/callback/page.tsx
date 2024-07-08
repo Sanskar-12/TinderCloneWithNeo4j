@@ -1,7 +1,7 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
 
-const HomePage = async () => {
+const CallbackPage = async () => {
   const { isAuthenticated, getUser } = getKindeServerSession();
 
   if (!(await isAuthenticated())) {
@@ -18,9 +18,7 @@ const HomePage = async () => {
     );
   }
 
-  return <div>
-    Hi User {user.given_name}
-  </div>;
+  return <div>CallbackPage</div>;
 };
 
-export default HomePage;
+export default CallbackPage;
