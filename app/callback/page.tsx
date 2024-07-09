@@ -1,5 +1,6 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
+import { createUser, getUserById } from "../neo4j.action";
 
 const CallbackPage = async () => {
   const { isAuthenticated, getUser } = getKindeServerSession();
@@ -18,7 +19,19 @@ const CallbackPage = async () => {
     );
   }
 
-  return <div>CallbackPage</div>;
+  const dbUser=await getUserById(user.id)
+
+  if(!dbUser)
+    {
+      await createUser({
+        applicationId:user.id,
+        email:user.email as string,
+        firstname:user.given_name as string,
+        lastname:user.family_name as string
+      })
+    }
+
+  return redirect("/")
 };
 
 export default CallbackPage;
